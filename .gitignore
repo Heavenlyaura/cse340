@@ -14,3 +14,16 @@ node_modules
 
 # .DS_Store is only for Mac users
 **/.DS_Store
+
+
+# README File is a file that contains information
+# about the project. It is not necessary to upload
+# this file to github.
+README.md
+
+# Ignore the lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+
