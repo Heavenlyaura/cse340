@@ -22,7 +22,7 @@ body {
   --black: black;
   --white: #ffffff;
   --main-col: #decbb7;
-  --alt-col: #152575;
+  --alt-col: grey;
   --accent: #111227;
 }
 
@@ -73,7 +73,6 @@ nav ul li {
 .heromsg img {
   width: 100px;
   box-shadow: 1px 1px 10px var(--accent);
-  border-radius: 1rem;
   border: 1px solid;
 }
 .heromsg p {
@@ -103,6 +102,7 @@ nav ul li {
   height: 150px;
   margin: 0 auto;
   background-color: var(--white);
+  box-shadow: 1px 1px 10px;
 }
 .upgrade-info a {
   color: var(--white);
@@ -150,7 +150,6 @@ footer {
     justify-self: start;
     align-self: self-end;
     background-color: rgba(255, 255, 255, 0.662);
-    border-radius: 1rem;
     margin-left: 2rem;
     border: 1px solid var(--accent);
   }
