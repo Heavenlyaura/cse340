@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); /* Import google font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"); /* Import google font */
 
 /******* Change Box Model ***************/
 *,
@@ -10,7 +10,7 @@
 }
 
 body {
-  font-family:  "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 #wrapper {
@@ -66,7 +66,8 @@ nav a:hover {
 
 /* Hero Styling */
 .hero-img img {
-  width: 100%;
+  width: 80%;
+  justify-self: center;
 }
 .hero h2 {
   text-align: center;
@@ -128,7 +129,6 @@ nav a:hover {
 }
 
 /* Classifications Pages */
-
 #inv-display {
   margin: 1rem;
   display: flex;
@@ -162,8 +162,32 @@ nav a:hover {
   padding: 1rem;
 }
 
-/* error view */
+/* Detail Page */
+.detail-page {
+  padding: 1rem 5px;
+}
 
+.detail-grid img {
+  width: 100%;
+}
+
+.detail-page h1, h2 {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.detail-grid span {
+  font-weight: bolder;
+}
+
+.price,
+.description,
+.color,
+.miles {
+  padding: 1rem 0;
+}
+
+/* error view */
 .error {
   display: grid;
 }
@@ -179,11 +203,15 @@ nav a:hover {
   z-index: 2;
 }
 
+.error {
+  color: white;
+}
+
 /* Footer styling */
 footer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   background-color: var(--accent);
   color: var(--white);
   height: 100px;
@@ -239,6 +267,21 @@ footer {
   .d-reviews li {
     padding: 0.9rem;
   }
+
+  /* Detail View */
+  .detail-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-page {
+    padding: 1.5rem 1.5rem;
+  }
+
+  .detail-page h1, .detail-page h2 {
+    text-align: left;
+  }
 }
 
 /* Larger View */
@@ -279,5 +322,3 @@ footer {
     justify-content: space-evenly;
   }
 }
-
-
