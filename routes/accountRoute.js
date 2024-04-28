@@ -9,4 +9,7 @@ router.get('/login', utilities.handleErrors(accountController.buildLogin))
 /* Gets the Registration view for the Application */
 router.get('/register', utilities.handleErrors(accountController.buildRegister))
 
+/* Procesess the registration process */
+router.post('/register', utilities.handleErrors(accountController.registerAccount))
+
 module.exports = router

@@ -245,6 +245,8 @@ input:focus {
 }
 .notice {
   color: red;
+  padding: 1rem;
+  list-style: none;
 }
 
 /* error view */
