@@ -1,17 +1,22 @@
 <% if (title) { %>
-  <h1><%= title %></h1>
+  <h1>
+    <%= title %>
+  </h1>
   <!-- <%- messages() %> -->
-  <% } else {
-    res.redirect('/')
-  } %>
+  <% } else { res.redirect('/') } %>
 
-  <div class="form">
-    <form action="" method="post">
-      <label for="account_email">Email: </label>
-      <input type="email" id="account_email" name="account_email" required>
-      <label for="account_password">Password:</label>
-      <input type="password" name="account_password" id="account_password" required>
-      <input id="submit" type="submit" value="Login">
-    </form>
-    <p>No account? <span><a href="account/register">Sign-Up</a></span></p>
-  </div>
+    <div class="form">
+      <form action="" method="post">
+        <label for="account_email">Email: </label>
+        <input type="email" id="account_email" name="account_email" required placeholder="goodnessokafor@example.com">
+        <label for="account_password">Password:</label>
+        <div class="show-pword"> <!-- This div is created to flex-row the direction of the password field and show button to be on the same position and direction -->
+          <input type="password" name="account_password" id="account_password" required placeholder="************"
+            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+            title="Password must be at least 12 characters long and contains at leate 1 uppercase, digit and special charater.">
+          <span class="show">Show</span>
+        </div>
+          <input id="submit" type="submit" value="Login">
+      </form>
+      <p>No account? <span><a href="/account/register">Sign-Up</a></span></p>
+    </div>
