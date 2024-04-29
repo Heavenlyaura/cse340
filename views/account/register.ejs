@@ -7,24 +7,28 @@
     <% if (errors) { %>
       <ul class="notice">
         <% errors.array().forEach(error=> { %>
-          <li>
-            <%= error.msg %>
-          </li>
-          <% }) %>
+          <% if (error.msg != "Invalid value" ) {%>
+            <li>
+              <%= error.msg %>
+            </li>
+            <% } %>
+              <% }) %>
       </ul>
       <% } %>
 
         <div class="form">
           <form action="/account/register" method="post">
             <label for="account_firstname">First name: </label>
-            <input type="text" name="account_firstname" id="account_firstname" required placeholder="Goodness">
+            <input type="text" name="account_firstname" id="account_firstname" required placeholder="Goodness"
+              value="<%= locals.account_firstname %>">
 
             <label for="account_lastname">Last name: </label>
-            <input type="text" name="account_lastname" id="account_lastname" required placeholder="Okafor">
+            <input type="text" name="account_lastname" id="account_lastname" required placeholder="Okafor"
+              value="<%= locals.account_lastname %>">
 
             <label for="account_email">Email: </label>
             <input type="email" name="account_email" id="account_email" required
-              placeholder="goodnessokafor@example.com">
+              placeholder="goodnessokafor@example.com" value="<%= locals.account_email %>">
 
             <label for="account_password">Password: </label>
             <div class="show-pword">
