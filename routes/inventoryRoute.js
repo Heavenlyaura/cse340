@@ -17,7 +17,7 @@ router.get('/addvehicle', utilities.handleErrors(invController.createAddVehicle)
 router.get('/addclassification', utilities.handleErrors(invController.addClassificationView))
 // Post request to the add classification page
 router.post('/addclassification',
-  utilities.handleErrors(classValidate.classificationRules()),
+  classValidate.classificationRules(),
   utilities.handleErrors(classValidate.checkClassificationData),
   utilities.handleErrors(invController.insertClassification),
 )

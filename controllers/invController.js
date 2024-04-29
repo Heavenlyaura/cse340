@@ -63,9 +63,9 @@ invCont.addClassificationView = async (req, res, next) => {
   Insert new Classification into classification table
  * ************************** */
 invCont.insertClassification = async (req, res, next) => {
-  let nav = await utilities.getNav()
   const { classification_name } = req.body
   const insert = await invModel.insertClassification(classification_name)
+  let nav = await utilities.getNav()
   if (insert) {
     req.flash("notice", `New classification "${classification_name}" has been added`)
     res.status(201).render('./inventory/management', {
