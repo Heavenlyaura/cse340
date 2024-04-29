@@ -47,7 +47,6 @@ async function checkExistingName(classification_name) {
   try {
     const sql = `SELECT * FROM classification WHERE classification_name = $1`;
     const name = await pool.query(sql, [classification_name]);
-    console.log('classification name:', name)
     return name.rowCount
   } catch (error) {
     return error.message
@@ -58,7 +57,6 @@ async function checkExistingName(classification_name) {
   *  Insert classifications
   * ********************************* */
 async function insertClassification(classification_name) {
-  console.log('classification Name anme:', classification_name)
   try {
     const sql = `INSERT INTO classification (classification_name) VALUES ($1)`;
     const insert = await pool.query(sql, [classification_name])
