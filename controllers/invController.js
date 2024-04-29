@@ -62,7 +62,7 @@ invCont.addClassificationView = async (req, res, next) => {
 /* ***************************
   Insert new Classification into classification table
  * ************************** */
-invCont.insertClassification = async (req, res, next) => {
+invCont.insertIntoClassTable = async (req, res, next) => {
   const { classification_name } = req.body
   const insert = await invModel.insertClassification(classification_name)
   let nav = await utilities.getNav()

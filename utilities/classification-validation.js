@@ -12,8 +12,8 @@ validate.classificationRules = () => {
       .trim()
       .escape()
       .notEmpty()
-      .isLength({ min: 2 })
       .matches(/^[a-zA-Z0-9]+$/, 'i')
+      .isLength({ min: 2 })
       .withMessage('Classification name is required and should meet expression requirements')
       .custom(async (classification_name) => {
         const nameExists = await invModel.checkExistingName(classification_name)

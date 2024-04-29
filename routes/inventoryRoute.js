@@ -19,7 +19,7 @@ router.get('/addclassification', utilities.handleErrors(invController.addClassif
 router.post('/addclassification',
   classValidate.classificationRules(),
   utilities.handleErrors(classValidate.checkClassificationData),
-  utilities.handleErrors(invController.insertClassification),
+  utilities.handleErrors(invController.insertIntoClassTable),
 )
 
 
