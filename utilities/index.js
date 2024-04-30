@@ -70,7 +70,7 @@ Util.buildDetailDisplay = async function (data) {
     <div class="detail-grid"> 
     <img src="${item.inv_image}" alt="${item.inv_make} ${item.inv_name}"/>
     <div class="detail-info"> 
-    <h2> ${item.inv_make} ${item.inv_name} Details </h2>
+    <h2> ${item.inv_make} ${item.inv_model} Details </h2>
     <p class="price"><span> Price: </span> $${new Intl.NumberFormat('en-US').format(item.inv_price)} </p>
     <p class="description"><span> Description: </span> ${item.inv_description} </p>
     <p class="color"><span> Color: </span> ${item.inv_color} </p>
@@ -82,6 +82,25 @@ Util.buildDetailDisplay = async function (data) {
     display = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
   return display
+}
+
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications()
+  let classificationList =
+    '<select name="classification_id" id="classificationList" required>'
+  classificationList += "<option value=''>Choose a Classification</option>"
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"'
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      classificationList += " selected "
+    }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+  return classificationList
 }
 
 /* ****************************************

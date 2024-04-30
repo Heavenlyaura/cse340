@@ -83,12 +83,48 @@ invCont.insertIntoClassTable = async (req, res, next) => {
   }
 }
 
+
+
+/* ***************************
+  Add Vehicle View
+ * ************************** */
 invCont.createAddVehicle = async (req, res, next) => {
   let nav = await utilities.getNav()
-  res.render('./inventory/add-vehicles', {
+  let inventory = await utilities.buildClassificationList()
+  res.render('./inventory/add-inventory', {
     nav,
-    title: 'Add Vehicles'
+    title: 'Add Vehicles',
+    errors: null,
+    inventory
   })
+}
+
+invCont.insertIntoInvTable = async (req, res, next) => {
+  const { classification_id, inv_make, inv_model,
+    inv_description, inv_image, inv_thumbnail, inv_price,
+    inv_year, inv_miles, inv_color } = req.body // extracts all needed information from the request body
+  let nav = await utilities.getNav()
+  let inventory = await utilities.buildClassificationList()
+  const insert = await invModel.insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color)
+
+  if (insert.rowCount = 1) { // checks if the query was sucessful by checking for the row count in the returend query 
+    req.flash("notice", `${inv_make} ${inv_model} has been sucessfully added!`)
+    res.render('./inventory/management', {
+      nav,
+      inventory,
+      title: 'Inventory Management',
+      errors: null
+    })
+  } else {
+    req.flash("notice", 'Something went wrong') // if the query was not sucessful, flash a message to the user
+    res.render('./inventory/add-inventory', {
+      nav,
+      inventory,
+      title: 'Add Vehicles',
+      errors: null,
+      classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles
+    })
+  }
 }
 
 module.exports = invCont
