@@ -211,15 +211,19 @@ form {
   width: 80%;
   margin: auto;
 }
-input, select, textarea {
+input,
+select,
+textarea {
   padding: 1rem;
   border-radius: 10px;
   font-size: 1.2rem;
+  border: 1px solid var(--accent);
 }
-input:focus {
-  outline: none;
-  border: 2px solid var(--accent);
+
+input {
+  outline: inherit;
 }
+
 #submit {
   width: 150px;
   margin: 1rem auto;
@@ -265,6 +269,16 @@ input:focus {
 }
 .error {
   color: white;
+}
+
+/* Management Section */
+
+.management-section {
+  padding: 1rem;
+}
+
+.management-section ul {
+  list-style: none;
 }
 
 /* Footer styling */

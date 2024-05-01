@@ -66,7 +66,8 @@ invCont.insertIntoClassTable = async (req, res, next) => {
   const { classification_name } = req.body
   const insert = await invModel.insertClassification(classification_name)
   let nav = await utilities.getNav()
-  if (insert.rowCount == 1) { // This checks if the insert was sucessful by checking the rowcount, if its 1 then the query was sucessful but if there is no rowCount then the query did not run.
+  console.log('here - 1 jjjjjjjj')
+  if (insert.rowCount > 0) { // This checks if the insert was sucessful by checking the rowcount, if its 1 then the query was sucessful but if there is no rowCount then the query did not run.
     req.flash("notice", `New classification "${classification_name}" has been added`)
     res.status(201).render('./inventory/management', {
       title: 'Inventory Management',
@@ -74,6 +75,8 @@ invCont.insertIntoClassTable = async (req, res, next) => {
       errors: null
     })
   } else {
+    console.log('here - 2 kkkkkkkkkk')
+
     req.flash("notice", `Sorry, Adding ${classification_name} was not sucesssful! Please try again`)
     res.status(501).render("./inventory/add-classification", {
       nav,
@@ -103,6 +106,8 @@ invCont.insertIntoInvTable = async (req, res, next) => {
   const { classification_id, inv_make, inv_model,
     inv_description, inv_image, inv_thumbnail, inv_price,
     inv_year, inv_miles, inv_color } = req.body // extracts all needed information from the request body
+  console.log("YERAAAAA", inv_year)
+
   let nav = await utilities.getNav()
   let inventory = await utilities.buildClassificationList()
   const insert = await invModel.insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color)

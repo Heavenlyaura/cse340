@@ -10,11 +10,11 @@ validate.classificationRules = () => {
   // Classification name Validation
   return [
     body("classification_name")
-      .trim()
-      .escape()
       .notEmpty()
-      .matches(/^[a-zA-Z0-9]+$/, 'i')
+      .escape()
+      .trim()
       .isLength({ min: 2 })
+      .matches(/^[a-zA-Z0-9]+$/, 'i')
       .withMessage('Classification name is required and should meet expression requirements')
       .custom(async (classification_name) => {
         const nameExists = await invModel.checkExistingName(classification_name)
@@ -81,8 +81,8 @@ validate.inventoryRules = () => {
 
     // Year must not be empty, must be a number and must be 4 digits in length
     body('inv_year')
-      .notEmpty().withMessage('Year is required'),
-      // .matches(/^\d{4}$/).withMessage('Year must be a 4-digit whole number'),
+      .notEmpty().withMessage('Year is required')
+      .matches(/^\d{4}$/).withMessage('Year must be a 4-digit whole number'),
 
     body("inv_miles")
       .notEmpty().withMessage('Miles is required')
