@@ -247,6 +247,9 @@ input {
 #account_password {
   width: 100%;
 }
+.account-p {
+  padding: 1rem;
+}
 .notice {
   color: red;
   padding: 1rem;
