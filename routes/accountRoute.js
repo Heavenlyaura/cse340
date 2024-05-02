@@ -13,7 +13,9 @@ router.get('/login', utilities.handleErrors(accountController.buildLogin))
 router.get('/register', utilities.handleErrors(accountController.buildRegister))
 
 /* Gets the Account view for the Application */
-router.get('/', utilities.handleErrors(accountController.getAccountView))
+router.get('/',
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.getAccountView))
 
 
 /* Procesess the registration process */
