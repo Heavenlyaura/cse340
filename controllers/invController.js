@@ -139,4 +139,21 @@ invCont.insertIntoInvTable = async (req, res, next) => {
   }
 }
 
+/* ***************************
+  Delete Inventory
+ * ************************** */
+invCont.DeleteInvView = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  let inv_id = req.params.invId
+  let invDetailsReq = await invModel.getInventoryDetailsById(inv_id)
+  let invDetails = invDetailsReq[0]
+  
+  res.render('./inventory/delete-inventory', {
+    nav,
+    title: 'Delete Inventory',
+    errors: null,
+    invDetails,
+  })
+}
+
 module.exports = invCont

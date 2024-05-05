@@ -10,13 +10,12 @@ classificationList.addEventListener('change', () => {
   inventoryArray.forEach(items => {
     if (classificationList.value == items.classification_id) {
       console.log(classificationList.value)
-      // invList.innerHTML = ''
       let p = document.createElement('p')
       let aDelete = document.createElement('a')
       let aModify = document.createElement('a')
       let span = document.createElement('span')
 
-      aDelete.setAttribute('href', '/inv/delete')
+      aDelete.setAttribute('href', `/inv/delete/${items.inv_id}`)
       aModify.setAttribute('href', 'Modify')
       aDelete.textContent = 'Delete'
       aModify.textContent = 'Modify'

@@ -16,6 +16,10 @@ router.get('/', utilities.handleErrors(invController.createInvManagement))
 router.get('/addvehicle', utilities.handleErrors(invController.createAddVehicle))
 //  Route to add classification page
 router.get('/addclassification', utilities.handleErrors(invController.addClassificationView))
+// Delete Route for Inventory page
+router.get('/delete/:invId', utilities.handleErrors(invController.DeleteInvView))
+
+
 // Post request to the add classification page
 router.post('/addclassification',
   validateInv.classificationRules(),
