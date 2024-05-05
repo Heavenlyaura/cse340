@@ -27,6 +27,7 @@ router.post('/addvehicle',
   validateInv.inventoryRules(),
   utilities.handleErrors(validateInv.checkInventoryData),
   utilities.handleErrors(invController.insertIntoInvTable)
+  
 )
 
 

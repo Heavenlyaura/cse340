@@ -4,7 +4,11 @@ const pool = require("../database/")
  *  Get all classification data
  * ************************** */
 async function getClassifications() {
-  return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+  try {
+    return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+  } catch (error) {
+    console.error("getclassifications error " + error)
+  }
 }
 
 /* ***************************
@@ -66,7 +70,6 @@ async function insertClassification(classification_name) {
   }
 }
 
-
 async function insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color) {
   try {
     const sql = `INSERT INTO inventory (classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
@@ -79,5 +82,18 @@ async function insertIntoInvTable(classification_id, inv_make, inv_model, inv_de
   }
 }
 
+/*  **********************************
+  *  Insert classifications
+  * ********************************* */
+async function getInventory() {
+  try {
+    const sql = `SELECT * FROM inventory`
+    const result = await pool.query(sql)
+    return result.rows
+  } catch (error) {
+    return error.message
+  }
+}
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryDetailsById, checkExistingName, insertClassification, insertIntoInvTable }
+
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryDetailsById, checkExistingName, insertClassification, insertIntoInvTable, getInventory }

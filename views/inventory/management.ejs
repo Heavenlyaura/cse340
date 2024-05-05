@@ -3,11 +3,27 @@
     <%= title %>
   </h1>
   <%- messages() %>
-  <% } else { res.redirect('/')} %>
+    <% } else { res.redirect('/')} %>
 
-    <div class="management-section">
-      <ul>
-        <li><a href="/inv/addclassification">Add New Classification</a></li>
-        <li><a href="/inv/addvehicle">Add New Vehicle</a></li>
-      </ul>
-    </div>
+      <div class="management-section">
+        <div class="add-items">
+          <ul>
+            <li><a href="/inv/addclassification">Add New Classification</a></li>
+            <li><a href="/inv/addvehicle">Add New Vehicle</a></li>
+          </ul>
+        </div>
+
+        <div class="manage-inv">
+          <h3>Manage Inventory</h3>
+          <p>Choose a classification to see inventory items.</p>
+          <div class="inventory">
+            <%- classificationList %>
+              <div class="hide">
+                <input id="inventory" type="hidden" value="<%= JSON.stringify(inventory) %>">
+              </div>
+              <h3>Vehicle Name</h3>
+              <div class="inv-list">
+              </div>
+          </div>
+        </div>
+      </div>

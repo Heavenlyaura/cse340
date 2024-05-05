@@ -41,9 +41,14 @@ invCont.buildByInvId = async function (req, res, next) {
  * ************************** */
 invCont.createInvManagement = async (req, res, next) => {
   let nav = await utilities.getNav()
+  let classificationList = await utilities.buildClassificationList()
+  let inventory = await invModel.getInventory()
+  console.log(inventory)
   res.render('./inventory/management', {
     title: 'Inventory Management',
     nav,
+    inventory: inventory,
+    classificationList,
   })
 }
 
@@ -110,6 +115,7 @@ invCont.insertIntoInvTable = async (req, res, next) => {
 
   let nav = await utilities.getNav()
   let inventory = await utilities.buildClassificationList()
+  let classificationList = await utilities.buildClassificationList()
   const insert = await invModel.insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color)
 
   if (insert.rowCount = 1) { // checks if the query was sucessful by checking for the row count in the returend query 
@@ -117,6 +123,7 @@ invCont.insertIntoInvTable = async (req, res, next) => {
     res.render('./inventory/management', {
       nav,
       inventory,
+      classificationList,
       title: 'Inventory Management',
       errors: null
     })
