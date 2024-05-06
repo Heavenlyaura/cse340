@@ -110,7 +110,7 @@ invCont.insertIntoInvTable = async (req, res, next) => {
     
   const insert = await invModel.insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color)
 
-  if (insert.rowCount = 1) { // checks if the query was sucessful by checking for the row count in the returend query 
+  if (insert.rowCount > 0) { // checks if the query was sucessful by checking for the row count in the returend query 
     req.flash("notice", `${inv_make} ${inv_model} has been sucessfully added!`)
     res.redirect('/inv')
   } else {
@@ -144,27 +144,13 @@ invCont.DeleteInvView = async function (req, res, next) {
 invCont.deleteInvItem = async function (req, res, next) {
   const { inv_make, inv_model, inv_id } = req.body
   let deleteInv = await invModel.deleteInvItem(inv_id)
-  let inventory = await invModel.getInventory()
-  let classificationList = await utilities.buildClassificationList()
-  let nav = await utilities.getNav()
 
   if (deleteInv.rowCount > 0) {
+    res.redirect('/inv')
     req.flash('notice', `${inv_make} ${inv_model} was sucessfully deleted`)
-    res.render('./inventory/management', {
-      nav,
-      title: 'Inventory Management',
-      errors: null,
-      classificationList,
-      inventory,
-    })
   } else {
-    res.render('./inventory/management', {
-      nav,
-      title: 'Inventory Management',
-      errors: null,
-      classificationList,
-      inventory
-    })
+    res.redirect('/inv/delete/inv_id')
+    req.flash('notice', 'Error in deletion, please try again')
   }
 }
 
