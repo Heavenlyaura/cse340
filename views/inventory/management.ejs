@@ -4,7 +4,6 @@
   </h1>
   <%- messages() %>
     <% } else { res.redirect('/')} %>
-
       <div class="management-section">
         <div class="add-items">
           <ul>
@@ -13,17 +12,11 @@
           </ul>
         </div>
 
-        <div class="manage-inv">
-          <h3>Manage Inventory</h3>
-          <p>Choose a classification to see inventory items.</p>
-          <div class="inventory">
-            <%- classificationList %>
-              <div class="hide">
-                <input id="inventory" type="hidden" value="<%= JSON.stringify(inventory) %>">
-              </div>
-              <h3>Vehicle Name</h3>
-              <div class="inv-list">
-              </div>
-          </div>
-        </div>
+        <h2>Manage Inventory</h2>
+        <p>Choose a classification to see inventory items.</p>
+        <%- classificationList %>
+          <table id="inventoryDisplay"></table>
+          <noscript>JavaScript must be enabled to use this page.</noscript>
+
+          <script src="/js/inventory.js"></script>
       </div>

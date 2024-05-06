@@ -107,7 +107,7 @@ invCont.insertIntoInvTable = async (req, res, next) => {
   const { classification_id, inv_make, inv_model,
     inv_description, inv_image, inv_thumbnail, inv_price,
     inv_year, inv_miles, inv_color } = req.body // extracts all needed information from the request body
-    
+
   const insert = await invModel.insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color)
 
   if (insert.rowCount > 0) { // checks if the query was sucessful by checking for the row count in the returend query 
@@ -121,6 +121,19 @@ invCont.insertIntoInvTable = async (req, res, next) => {
       errors: null,
       classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles
     })
+  }
+}
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
   }
 }
 

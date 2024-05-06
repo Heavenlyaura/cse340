@@ -132,6 +132,7 @@ Util.checkJWTToken = (req, res, next) => {
         next()
       })
   } else {
+    res.locals.accountData = ''
     next()
   }
 }
@@ -145,6 +146,19 @@ Util.checkLogin = (req, res, next) => {
   } else {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
+  }
+}
+
+/* ****************************************
+ *  Check Admin
+ * ************************************ */
+Util.checkAdmin = (req, res, next) => {
+  if (res.locals.accountData.account_type === 'Admin') {
+    next()
+  }
+  else {
+    req.flash("notice", "You are not authorized to view this page.")
+    res.redirect("/")
   }
 }
 

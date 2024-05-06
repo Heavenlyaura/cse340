@@ -6,18 +6,30 @@ const utilities = require('../utilities')
 const validateInv = require('../utilities/classification-validation')
 const validate = require("../utilities/classification-validation")
 
+// Route to the inventory management page
+router.get('/',
+  utilities.checkAdmin,
+  utilities.handleErrors(invController.createInvManagement))
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
 // Route to the inventory detail page
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByInvId))
-// Route to the inventory management page
-router.get('/', utilities.handleErrors(invController.createInvManagement))
 // Route to add vehicle page
-router.get('/addvehicle', utilities.handleErrors(invController.createAddVehicle))
+router.get('/addvehicle',
+  utilities.checkAdmin,
+  utilities.handleErrors(invController.createAddVehicle))
 //  Route to add classification page
-router.get('/addclassification', utilities.handleErrors(invController.addClassificationView))
+router.get('/addclassification',
+  utilities.checkAdmin,
+  utilities.handleErrors(invController.addClassificationView))
 // Delete Route for Inventory page
-router.get('/delete/:invId', utilities.handleErrors(invController.DeleteInvView))
+router.get('/delete/:invId',
+  utilities.checkAdmin,
+  utilities.handleErrors(invController.DeleteInvView))
+
+// Post request to the inventory detail page
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+ 
 
 
 // Post request to the add classification page
@@ -32,9 +44,9 @@ router.post('/addvehicle',
   utilities.handleErrors(validateInv.checkInventoryData),
   utilities.handleErrors(invController.insertIntoInvTable),
 
-// Post request to delete inventory 
-router.post('/', utilities.handleErrors(invController.deleteInvItem)) 
-  
+  // Post request to delete inventory 
+  router.post('/', utilities.handleErrors(invController.deleteInvItem))
+
 )
 
 
