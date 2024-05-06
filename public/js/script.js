@@ -4,12 +4,10 @@ const inventoryJson = inventory.value
 const invList = document.querySelector('.inv-list')
 const inventoryArray = JSON.parse(inventoryJson)
 
-console.log(inventoryArray)
 classificationList.addEventListener('change', () => {
   invList.innerHTML = ''
   inventoryArray.forEach(items => {
     if (classificationList.value == items.classification_id) {
-      console.log(classificationList.value)
       let p = document.createElement('p')
       let aDelete = document.createElement('a')
       let aModify = document.createElement('a')
