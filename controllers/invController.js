@@ -146,11 +146,11 @@ invCont.deleteInvItem = async function (req, res, next) {
   let deleteInv = await invModel.deleteInvItem(inv_id)
 
   if (deleteInv.rowCount > 0) {
-    res.redirect('/inv')
     req.flash('notice', `${inv_make} ${inv_model} was sucessfully deleted`)
+    res.redirect('/inv')
   } else {
-    res.redirect('/inv/delete/inv_id')
     req.flash('notice', 'Error in deletion, please try again')
+    res.redirect('/inv/delete/inv_id')
   }
 }
 
