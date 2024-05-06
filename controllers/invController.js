@@ -43,7 +43,6 @@ invCont.createInvManagement = async (req, res, next) => {
   let nav = await utilities.getNav()
   let classificationList = await utilities.buildClassificationList()
   let inventory = await invModel.getInventory()
-  console.log(inventory)
   res.render('./inventory/management', {
     title: 'Inventory Management',
     nav,
@@ -71,7 +70,6 @@ invCont.insertIntoClassTable = async (req, res, next) => {
   const { classification_name } = req.body
   const insert = await invModel.insertClassification(classification_name)
   let nav = await utilities.getNav()
-  console.log('here - 1 jjjjjjjj')
   if (insert.rowCount > 0) { // This checks if the insert was sucessful by checking the rowcount, if its 1 then the query was sucessful but if there is no rowCount then the query did not run.
     req.flash("notice", `New classification "${classification_name}" has been added`)
     res.status(201).render('./inventory/management', {
@@ -80,8 +78,6 @@ invCont.insertIntoClassTable = async (req, res, next) => {
       errors: null
     })
   } else {
-    console.log('here - 2 kkkkkkkkkk')
-
     req.flash("notice", `Sorry, Adding ${classification_name} was not sucesssful! Please try again`)
     res.status(501).render("./inventory/add-classification", {
       nav,
@@ -111,27 +107,16 @@ invCont.insertIntoInvTable = async (req, res, next) => {
   const { classification_id, inv_make, inv_model,
     inv_description, inv_image, inv_thumbnail, inv_price,
     inv_year, inv_miles, inv_color } = req.body // extracts all needed information from the request body
-  console.log("YERAAAAA", inv_year)
-
-  let nav = await utilities.getNav()
-  let inventory = await utilities.buildClassificationList()
-  let classificationList = await utilities.buildClassificationList()
+    
   const insert = await invModel.insertIntoInvTable(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles, inv_color)
 
   if (insert.rowCount = 1) { // checks if the query was sucessful by checking for the row count in the returend query 
     req.flash("notice", `${inv_make} ${inv_model} has been sucessfully added!`)
-    res.render('./inventory/management', {
-      nav,
-      inventory,
-      classificationList,
-      title: 'Inventory Management',
-      errors: null
-    })
+    res.redirect('/inv')
   } else {
     req.flash("notice", 'Something went wrong') // if the query was not sucessful, flash a message to the user
     res.render('./inventory/add-inventory', {
       nav,
-      inventory,
       title: 'Add Vehicles',
       errors: null,
       classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_year, inv_price, inv_miles
@@ -147,13 +132,40 @@ invCont.DeleteInvView = async function (req, res, next) {
   let inv_id = req.params.invId
   let invDetailsReq = await invModel.getInventoryDetailsById(inv_id)
   let invDetails = invDetailsReq[0]
-  
+
   res.render('./inventory/delete-inventory', {
     nav,
     title: 'Delete Inventory',
     errors: null,
     invDetails,
   })
+}
+
+invCont.deleteInvItem = async function (req, res, next) {
+  const { inv_make, inv_model, inv_id } = req.body
+  let deleteInv = await invModel.deleteInvItem(inv_id)
+  let inventory = await invModel.getInventory()
+  let classificationList = await utilities.buildClassificationList()
+  let nav = await utilities.getNav()
+
+  if (deleteInv.rowCount > 0) {
+    req.flash('notice', `${inv_make} ${inv_model} was sucessfully deleted`)
+    res.render('./inventory/management', {
+      nav,
+      title: 'Inventory Management',
+      errors: null,
+      classificationList,
+      inventory,
+    })
+  } else {
+    res.render('./inventory/management', {
+      nav,
+      title: 'Inventory Management',
+      errors: null,
+      classificationList,
+      inventory
+    })
+  }
 }
 
 module.exports = invCont

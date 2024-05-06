@@ -17,7 +17,7 @@
         </ul>
         <% } %>
           <div class="form">
-            <form action="/inv/management" method="post">
+            <form action="/inv/" method="post">
               <label for="inv_male">Make</label>
               <input type="text" id="inv_make" value="<%= locals.invDetails.inv_make %>" name="inv_make" readonly>
 
@@ -29,6 +29,7 @@
 
               <label for="inv_year">Year</label>
               <input type="text" id="inv_year" value="<%= locals.invDetails.inv_year %>" name="inv_year" readonly>
+              <input type="hidden" name="inv_id" value="<%= locals.invDetails.inv_id %>">
 
               <input type="submit" id="submit" value="Delete">
             </form>

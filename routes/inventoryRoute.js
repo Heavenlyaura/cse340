@@ -30,7 +30,10 @@ router.post('/addclassification',
 router.post('/addvehicle',
   validateInv.inventoryRules(),
   utilities.handleErrors(validateInv.checkInventoryData),
-  utilities.handleErrors(invController.insertIntoInvTable)
+  utilities.handleErrors(invController.insertIntoInvTable),
+
+// Post request to delete inventory 
+router.post('/', utilities.handleErrors(invController.deleteInvItem)) 
   
 )
 
