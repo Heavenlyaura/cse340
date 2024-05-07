@@ -29,6 +29,8 @@ router.get('/delete/:invId',
 
 // Post request to the inventory detail page
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
  
 
 
@@ -45,7 +47,12 @@ router.post('/addvehicle',
   utilities.handleErrors(invController.insertIntoInvTable),
 
   // Post request to delete inventory 
-  router.post('/', utilities.handleErrors(invController.deleteInvItem))
+  router.post('/', utilities.handleErrors(invController.deleteInvItem)),
+
+  router.post('/update', 
+  validateInv.inventoryRules(),
+  validateInv.checkEditData,
+  utilities.handleErrors(invController.updateInventoryData))
 
 )
 

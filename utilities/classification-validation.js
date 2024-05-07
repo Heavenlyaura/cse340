@@ -91,7 +91,17 @@ validate.inventoryRules = () => {
 
     body("inv_color")
       .notEmpty().withMessage('Color must not be empty')
+      .trim(),
+    
+    body('inv_image')
+      .notEmpty()
       .trim()
+      .withMessage('Image path is required'),
+    
+    body('inv_thumbnail')
+      .notEmpty()
+      .trim()
+      .withMessage('Thumbnail path is required'),
   ]
 }
 
@@ -127,6 +137,41 @@ validate.checkInventoryData = async (req, res, next) => {
     next()
   }
 }
+
+validate.checkEditData = async (req, res, next) => {
+  const { classification_id, inv_make, inv_model,
+    inv_description, inv_image, inv_thumbnail, inv_price,
+    inv_year, inv_miles, inv_color, inv_id } = req.body
+
+  const nav = await utilities.getNav()
+  const classificationList = await utilities.buildClassificationList(classification_id)
+  let errors = []
+  errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    res.render("./inventory/edit-inventory", {
+      errors,
+      nav,
+      title: "Add Inventory",
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+      classificationList,
+      inv_id
+    })
+    return
+  } else {
+    next()
+  }
+}
+
 
 
 

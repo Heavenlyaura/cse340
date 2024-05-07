@@ -153,12 +153,12 @@ Util.checkLogin = (req, res, next) => {
  *  Check Admin
  * ************************************ */
 Util.checkAdmin = (req, res, next) => {
-  if (res.locals.accountData.account_type === 'Admin') {
+  if (res.locals.accountData.account_type === 'Admin' || res.locals.accountData.account_type === 'Employee') {
     next()
   }
   else {
     req.flash("notice", "You are not authorized to view this page.")
-    res.redirect("/")
+    res.redirect("/account/login")
   }
 }
 
