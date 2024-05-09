@@ -279,13 +279,13 @@ input {
 
 /* Management Section */
 
-.management-section {
+.management {
   padding: 1.5rem;
 }
-.management-section ul {
+.management ul {
   list-style: none;
 }
-.management-section h2 {
+.management h2 {
   text-align: start;
 }
 #inventoryDisplay {

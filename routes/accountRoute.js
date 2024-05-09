@@ -17,6 +17,11 @@ router.get('/',
   utilities.checkLogin,
   utilities.handleErrors(accountController.getAccountView))
 
+// Route for updating account information
+router.get('/update/:id',
+  utilities.handleErrors(accountController.updateAccountView)
+)
+
 
 /* Procesess the registration process */
 // Process the registration data
@@ -33,6 +38,13 @@ router.post(
   regValidate.loginRules(),
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
+)
+
+router.post(
+  '/update',
+  regValidate.editRules(),
+  regValidate.checkEditData,
+  utilities.handleErrors(accountController.updateAccountInfo)
 )
 
 module.exports = router

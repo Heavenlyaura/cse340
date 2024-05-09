@@ -32,7 +32,7 @@ validate.registationRules = () => {
       .withMessage("A valid email is required.")
       .custom(async (account_email) => {
         const emailExists = await accountModel.checkExistingEmail(account_email)
-        if (emailExists) {
+        if (emailExists.rowCount) {
           throw new Error("Email exists. Please log in or use different email")
         }
       }),
@@ -118,5 +118,81 @@ validate.checkLoginData = async (req, res, next) => {
   }
   next()
 }
+
+validate.editRules = () => {
+
+  return [
+    // firstname is required and must be string
+    body("account_id")
+      .notEmpty(),
+
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .withMessage("Please provide a first name."), // on error this message is sent.
+
+    // lastname is required and must be string
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 2 })
+      .withMessage("Please provide a last name."), // on error this message is sent.
+
+    // valid email is required and cannot already exist in the database
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail() // refer to validator.js docs
+      .withMessage("A valid email is required.")
+      .custom(async (account_email) => {
+        let emailExists = await accountModel.checkExistingEmail(account_email)
+        console.log(emailExists)
+        if (emailExists.rowCount > 0) {
+          console.log('Open sememe')
+          emailExists.rows.forEach(row => {
+            if (row.account_id != account_id ) {
+              req.flash('notice', 'Email already exists, please use another email address');
+              return res.render('./account/update-account', {
+                title: 'Edit Account',
+                nav,
+                errors: null,
+                account_id,
+                account_firstname,
+                account_lastname,
+                account_email
+              })
+            }
+          });
+        }
+      })
+  ]
+}
+
+validate.checkEditData = async (req, res, next) => {
+  console.log('Open')
+  const { account_email, account_firstname, account_lastname } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/update-account", {
+      errors,
+      title: "Edit Account",
+      nav,
+      account_lastname,
+      account_firstname,
+      account_email,
+    })
+    return
+  }
+  next()
+}
+
+
+
+
 
 module.exports = validate

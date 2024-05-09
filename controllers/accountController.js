@@ -122,5 +122,42 @@ async function getAccountView(req, res) {
 }
 
 
+async function updateAccountView(req, res) {
+  let nav = await utilities.getNav()
+  const account_id = req.params.id;
+  const accountData = await accountModel.getAccountById(account_id)
+  res.render('./account/update-account', {
+    title: "Edit Account",
+    nav,
+    errors: null,
+    accountData,
+  })
+}
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, getAccountView }
+async function updateAccountInfo(req, res) {
+  // checks if the firstname exist in the request body signifying that this is the request from the Edit account not the Edit password
+  let nav = await utilities.getNav()
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+  const accountData = await accountModel.updateAccountTable(account_id, account_firstname, account_lastname, account_email)
+  
+  if (accountData.rowCount == 1) {
+    req.flash('notice', 'Information Sucessfully Updated')
+    res.redirect('/account/')
+  } else {
+    req.flash('notice', 'Error in update, try again')
+    res.render('./account/update-account', {
+      title: "Edit Account",
+      nav,
+      errors: null,
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email
+    })
+  }
+}
+
+
+
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, updateAccountView, updateAccountInfo, getAccountView }
