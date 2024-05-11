@@ -19,6 +19,7 @@ router.get('/',
 
 // Route for updating account information
 router.get('/update/:id',
+  utilities.checkLogin,
   utilities.handleErrors(accountController.updateAccountView)
 )
 
@@ -42,9 +43,18 @@ router.post(
 
 router.post(
   '/update',
+  utilities.checkLogin,
   regValidate.editRules(),
   regValidate.checkEditData,
   utilities.handleErrors(accountController.updateAccountInfo)
+)
+
+router.post(
+  '/password',
+  utilities.checkLogin,
+  regValidate.passwordRules(),
+  regValidate.checkPasswordData,
+  utilities.handleErrors(accountController.updatePasswordData)
 )
 
 module.exports = router

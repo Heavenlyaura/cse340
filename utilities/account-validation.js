@@ -119,13 +119,10 @@ validate.checkLoginData = async (req, res, next) => {
   next()
 }
 
-validate.editRules = () => {
+validate.editRules = (req, res, next) => {
 
   return [
     // firstname is required and must be string
-    body("account_id")
-      .notEmpty(),
-
     body("account_firstname")
       .trim()
       .escape()
@@ -147,23 +144,13 @@ validate.editRules = () => {
       .isEmail()
       .normalizeEmail() // refer to validator.js docs
       .withMessage("A valid email is required.")
-      .custom(async (account_email) => {
-        let emailExists = await accountModel.checkExistingEmail(account_email)
-        console.log(emailExists)
+      .custom(async (account_email, { req, res }) => { // Access req object directly here
+        const account_id = req.body.account_id; // Accessing account_id from request body
+        let emailExists = await accountModel.checkExistingEmail(account_email);
         if (emailExists.rowCount > 0) {
-          console.log('Open sememe')
           emailExists.rows.forEach(row => {
-            if (row.account_id != account_id ) {
-              req.flash('notice', 'Email already exists, please use another email address');
-              return res.render('./account/update-account', {
-                title: 'Edit Account',
-                nav,
-                errors: null,
-                account_id,
-                account_firstname,
-                account_lastname,
-                account_email
-              })
+            if (row.account_id != account_id) {
+              throw new Error("Email exists. Please log in or use different email")
             }
           });
         }
@@ -171,10 +158,14 @@ validate.editRules = () => {
   ]
 }
 
+
 validate.checkEditData = async (req, res, next) => {
-  console.log('Open')
   const { account_email, account_firstname, account_lastname } = req.body
   let errors = []
+
+  res.locals.accountData.account_firstname = account_firstname
+  res.locals.accountData.account_lastname = account_lastname
+  res.locals.accountData.account_email = account_email
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
@@ -185,6 +176,43 @@ validate.checkEditData = async (req, res, next) => {
       account_lastname,
       account_firstname,
       account_email,
+    })
+    return
+  }
+  next()
+}
+
+
+
+validate.passwordRules = () => {
+  return [
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+  ]
+}
+
+validate.checkPasswordData = async (req, res, next) => {
+  const { account_id, account_password } = req.body
+  let errors = []
+  console.log('Did we pass')
+  errors = validationResult(req);
+  // res.locals.accountData.account_password = account_password
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/update-account", {
+      errors,
+      title: "Edit Account",
+      nav,
+      account_id,
     })
     return
   }
