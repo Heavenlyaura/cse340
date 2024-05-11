@@ -5,7 +5,6 @@ const accountController = require('../controllers/accountController')
 const regValidate = require('../utilities/account-validation')
 // const { route } = require('./static')
 
-
 /* Get the Login in view for the Application */
 router.get('/login', utilities.handleErrors(accountController.buildLogin))
 
