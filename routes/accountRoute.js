@@ -45,6 +45,7 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
+// Process Account information update
 router.post(
   '/update',
   utilities.checkLogin,
@@ -53,6 +54,7 @@ router.post(
   utilities.handleErrors(accountController.updateAccountInfo)
 )
 
+// Process password change
 router.post(
   '/password',
   utilities.checkLogin,
