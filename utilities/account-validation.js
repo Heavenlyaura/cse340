@@ -203,7 +203,6 @@ validate.passwordRules = () => {
 validate.checkPasswordData = async (req, res, next) => {
   const { account_id, account_password } = req.body
   let errors = []
-  console.log('Did we pass')
   errors = validationResult(req);
   // res.locals.accountData.account_password = account_password
   if (!errors.isEmpty()) {
