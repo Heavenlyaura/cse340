@@ -27,7 +27,6 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
-
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
@@ -141,6 +140,7 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
+  console.log('Check Log in')
   if (res.locals.loggedin) {
     next()
   } else {

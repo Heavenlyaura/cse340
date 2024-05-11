@@ -3,7 +3,7 @@ const router = new express.Router()
 const utilities = require('../utilities')
 const accountController = require('../controllers/accountController')
 const regValidate = require('../utilities/account-validation')
-const { route } = require('./static')
+// const { route } = require('./static')
 
 
 /* Get the Login in view for the Application */
@@ -23,6 +23,10 @@ router.get('/update/:id',
   utilities.handleErrors(accountController.updateAccountView)
 )
 
+router.get('/logout', 
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.logout)
+)
 
 /* Procesess the registration process */
 // Process the registration data

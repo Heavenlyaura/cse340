@@ -140,7 +140,7 @@ async function updateAccountInfo(req, res) {
   let nav = await utilities.getNav()
   const { account_id, account_firstname, account_lastname, account_email } = req.body
   const accountData = await accountModel.updateAccountTable(account_id, account_firstname, account_lastname, account_email)
-  
+
   if (accountData.rowCount == 1) {
     req.flash('notice', 'Information Sucessfully Updated')
     res.redirect('/account/')
@@ -159,8 +159,8 @@ async function updateAccountInfo(req, res) {
 }
 
 async function updatePasswordData(req, res) {
-  const {account_id, account_password} = req.body
-  let hashedPassword 
+  const { account_id, account_password } = req.body
+  let hashedPassword
   try {
     // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10)
@@ -179,7 +179,10 @@ async function updatePasswordData(req, res) {
   }
 }
 
+function logout(req, res, next) {
+  res.clearCookie("jwt");
+  return res.redirect("/");
+}
 
 
-
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, updateAccountView, updateAccountInfo, getAccountView, updatePasswordData }
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, updateAccountView, updateAccountInfo, getAccountView, updatePasswordData, logout }
