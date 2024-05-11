@@ -101,6 +101,9 @@ invCont.createAddVehicle = async (req, res, next) => {
   })
 }
 
+/* ***************************
+ *  Insert Vehicle into Database
+ * ************************** */
 invCont.insertIntoInvTable = async (req, res, next) => {
   const { classification_id, inv_make, inv_model,
     inv_description, inv_image, inv_thumbnail, inv_price,
@@ -150,6 +153,9 @@ invCont.DeleteInvView = async function (req, res, next) {
   })
 }
 
+/* ***************************
+  Delete Inventory
+ * ************************** */
 invCont.deleteInvItem = async function (req, res, next) {
   const { inv_make, inv_model, inv_id } = req.body
   let deleteInv = await invModel.deleteInvItem(inv_id)
@@ -190,6 +196,9 @@ invCont.editInventoryView = async function (req, res, next) {
   })
 }
 
+/* ***************************
+ *  Update inventory data
+ * ************************** */
 invCont.updateInventoryData = async function (req, res, next) {
   const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id, inv_id } = req.body
 

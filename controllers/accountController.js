@@ -122,7 +122,9 @@ async function getAccountView(req, res) {
   })
 }
 
-
+/* ***************************
+ *  Create Account Update View
+ * ************************** */
 async function updateAccountView(req, res) {
   let nav = await utilities.getNav()
   const account_id = req.params.id;
@@ -135,6 +137,9 @@ async function updateAccountView(req, res) {
   })
 }
 
+/* ***************************
+ *  Update Account Information
+ * ************************** */
 async function updateAccountInfo(req, res) {
   // checks if the firstname exist in the request body signifying that this is the request from the Edit account not the Edit password
   let nav = await utilities.getNav()
@@ -158,6 +163,9 @@ async function updateAccountInfo(req, res) {
   }
 }
 
+/* **************************
+ *  Update Password
+ * ************************** */
 async function updatePasswordData(req, res) {
   const { account_id, account_password } = req.body
   let hashedPassword
@@ -179,6 +187,9 @@ async function updatePasswordData(req, res) {
   }
 }
 
+/* **************************
+ * Logout
+ * ************************** */
 function logout(req, res, next) {
   res.clearCookie("jwt");
   return res.redirect("/");
