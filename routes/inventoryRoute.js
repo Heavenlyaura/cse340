@@ -32,6 +32,8 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 
 router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
 
+// Get cart data
+router.get('/cart/:Id', utilities.handleErrors(invController.getCartInfoJSON))
 
 
 // Post request to the add classification page

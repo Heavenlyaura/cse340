@@ -42,14 +42,15 @@ Util.buildClassificationGrid = async function (data) {
         + ' on CSE Motors" /></a>'
       grid += '<div class="namePrice">'
       grid += '<hr />'
-      grid += '<h2>'
+      grid += '<h3>'
       grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View '
         + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
         + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
-      grid += '</h2>'
+      grid += '</h3>'
       grid += '<span>$'
         + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
       grid += '</div>'
+      grid += `<input type="button" id="addCart" inv_id=${vehicle.inv_id} name="addCart" value="Add to Cart">`
       grid += '</li>'
     })
     grid += '</ul>'
@@ -158,6 +159,14 @@ Util.checkAdmin = (req, res, next) => {
     req.flash("notice", "You are not authorized to view this page.")
     res.redirect("/account/login")
   }
+}
+
+Util.cartIcon = () => {
+  let cart = ` <div class="cart-icon">
+      <a href="/cart"><img src="/images/site/shopping-cart.png" alt=""></a>
+      <span class="badge"></span>
+</div> `
+  return cart
 }
 
 module.exports = Util

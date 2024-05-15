@@ -38,7 +38,7 @@ async function getInventoryDetailsById(inv_id) {
       `SELECT * FROM inventory
       WHERE inv_id = $1`, [inv_id]
     )
-    return data.rows[0]
+    return data.rows
   } catch (error) {
     console.error(`getinventorydetailsbyid ${error}`)
   }

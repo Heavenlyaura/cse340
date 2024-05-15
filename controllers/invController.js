@@ -12,11 +12,13 @@ invCont.buildByClassificationId = async function (req, res, next) {
   const data = await invModel.getInventoryByClassificationId(classification_id)
   const grid = await utilities.buildClassificationGrid(data)
   let nav = await utilities.getNav()
+  let cart = utilities.cartIcon()
   const className = data[0].classification_name
   res.render("./inventory/classification", {
     title: className + " vehicles",
     nav,
     grid,
+    cart
   })
 }
 
@@ -28,11 +30,13 @@ invCont.buildByInvId = async function (req, res, next) {
   const data = await invModel.getInventoryDetailsById(inv_id)
   const display = await utilities.buildDetailDisplay(data)
   let nav = await utilities.getNav()
+  let cart = utilities.cartIcon()
   const className = `${data[0].inv_year} ${data[0].inv_make} ${data[0].inv_model}`
   res.render("./inventory/detail", {
     title: className,
     nav,
     display,
+    cart
   })
 }
 
@@ -216,6 +220,18 @@ invCont.updateInventoryData = async function (req, res, next) {
       inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id, inv_id,
       errors: null,
     })
+  }
+}
+
+invCont.getCartInfoJSON = async (req, res, next) => {
+  const inventory_id = parseInt(req.params.Id)
+  const response = await invModel.getInventoryDetailsById(inventory_id)
+  const invData = response[0]
+  console.log('data',invData)
+  if (invData.inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
   }
 }
 

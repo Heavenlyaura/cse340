@@ -12,7 +12,7 @@
   display: none;
 }
 h1 {
-  padding: 1rem;
+  padding: .5rem;
 }
 body {
   font-family: "Poppins", sans-serif;
@@ -31,6 +31,31 @@ body {
   --accent: #111227;
 }
 
+.titleCart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+.titleCart img {
+  width: 40px;
+}
+.cart-icon {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 1rem;
+  text-align: center;
+  font-size: 10px;
+}
+.cart-icon img {
+}
 #top-header {
   display: flex;
   justify-content: space-between;
@@ -176,7 +201,6 @@ nav a:hover {
   width: 100%;
 }
 
-.detail-page h1,
 h2 {
   padding: 1rem 0;
   text-align: center;
@@ -298,7 +322,6 @@ input {
 #inventoryDisplay tr:nth-child(even) {
   background-color: #ddd;
 }
-
 
 /* Footer styling */
 footer {
