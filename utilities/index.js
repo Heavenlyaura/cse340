@@ -50,7 +50,7 @@ Util.buildClassificationGrid = async function (data) {
       grid += '<span>$'
         + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
       grid += '</div>'
-      grid += `<input type="button" id="addCart" inv_id=${vehicle.inv_id} name="addCart" value="Add to Cart">`
+      grid += `<input type="button" class="addCart" inv_id=${vehicle.inv_id} name="addCart" value="Add to Cart">`
       grid += '</li>'
     })
     grid += '</ul>'
@@ -163,10 +163,22 @@ Util.checkAdmin = (req, res, next) => {
 
 Util.cartIcon = () => {
   let cart = ` <div class="cart-icon">
-      <a href="/cart"><img src="/images/site/shopping-cart.png" alt=""></a>
+      <a class="cartLink" href="/inv/cartView"><img src="/images/site/shopping-cart.png" alt=""></a>
       <span class="badge"></span>
 </div> `
   return cart
+}
+
+Util.getCartView = (receivedCart) => {
+  let display = `<div class="cartItems">`
+  display += `<div class="cartHead">`
+  display += '<h3>Image</h3>'
+  display += '<h3>Product</h3>'
+  display += '<h3>Price</h3> </div>'
+  display += '<div class="cartBody">'
+  receivedCart.forEach(item => {
+    display += `<p>${item.inv_image} ${item.inv_make} ${item.inv_model} ${item.inv_price}`
+  });
 }
 
 module.exports = Util

@@ -227,12 +227,25 @@ invCont.getCartInfoJSON = async (req, res, next) => {
   const inventory_id = parseInt(req.params.Id)
   const response = await invModel.getInventoryDetailsById(inventory_id)
   const invData = response[0]
-  console.log('data',invData)
+
   if (invData.inv_id) {
     return res.json(invData)
   } else {
     next(new Error("No data returned"))
   }
 }
+
+invCont.getCartItems = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav()
+    const receivedCart = req.body.array
+    let cartView = utilities.getCartView(receivedCart)
+
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+ 
 
 module.exports = invCont

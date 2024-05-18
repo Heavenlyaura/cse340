@@ -36,6 +36,11 @@ router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryVi
 router.get('/cart/:Id', utilities.handleErrors(invController.getCartInfoJSON))
 
 
+
+
+// router.get('/cartView', utilities.handleErrors(invController.getCartView))
+
+
 // Post request to the add classification page
 router.post('/addclassification',
   validateInv.classificationRules(),
@@ -57,7 +62,7 @@ router.post('/update',
   validateInv.checkEditData,
   utilities.handleErrors(invController.updateInventoryData))
 
-
+router.post('/sendcart/', invController.getCartItems)
 
 
 
