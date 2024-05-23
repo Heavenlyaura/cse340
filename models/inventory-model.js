@@ -119,9 +119,19 @@ async function updateInventoryTable(inv_make, inv_model, inv_year, inv_descripti
   }
 }
 
+async function InsertOrderInTable(account_id, inv_id) {
+  try {
+    const sql = `INSERT INTO "order" (account_id, inv_id) VALUES ($1, $2)`
+    const result = await pool.query(sql, [account_id, inv_id])
+    return result
+  } catch (error) {
+    throw new Error('Error in insert', error)
+  }
+}
 
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryDetailsById, checkExistingName, insertClassification, insertIntoInvTable, getInventory, deleteInvItem, updateInventoryTable }
+
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryDetailsById, checkExistingName, insertClassification, insertIntoInvTable, getInventory, deleteInvItem, updateInventoryTable, InsertOrderInTable }
 
 
 

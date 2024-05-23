@@ -1,64 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const addCartInput = document.querySelectorAll('.addCart')
-  const badge = document.querySelector('.badge')
-  const cartLink = document.querySelector('.cartLink')
-  const cartItems = document.querySelector('.cartItems')
-  let cartArr = []
+  const addCartButtons = document.querySelectorAll('.addCart')
+  let badge = document.querySelector('.badge')
+  let notice = document.querySelector('.notice')
+  let total = document.querySelector('.total')
+  // if (localStorage.getItem('badgeCount')) {
+  //   badge.textContent = localStorage.getItem('badgeCount') || ''
+  // }
+  addCartButtons.forEach(addButton => {
+    const inv_id = addButton.getAttribute('inv_id')
+    addButton.addEventListener('click', () => {
+      const api = `/inv/addtocart/`
 
-  const storedCartItems = JSON.parse(localStorage.getItem('cart'))
-  if (storedCartItems && storedCartItems.length > 0) {
-    cartArr = storedCartItems
-    badge.innerHTML = cartArr.length
-  } else {
-    // badge.innerHTML = 0;
-    cartItems.innerHTML = '<p>No items in cart</p>'
-  }
-
-  addCartInput.forEach(card => {
-    const inventory_id = card.getAttribute('inv_id')
-    if (!inventory_id) {
-      console.error('Missing inv_id attribute')
-      return
-    }
-    card.addEventListener('click', () => {
-      let classIdURL = "/inv/cart/" + inventory_id
-      fetch(classIdURL)
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          }
-          throw new Error("Network response was not OK")
-        })
-        .then(data => {
-          cartArr.push(data)
-          console.log(cartArr)
-          badge.innerHTML = cartArr.length
-          localStorage.setItem('cart', JSON.stringify(cartArr))
-        })
-        .catch(error => {
-          console.error('Fetch error:', error)
-        })
-    })
-  })
-  console.log(cartArr)
-
-  cartLink.addEventListener('click', () => {
-    if (cartArr.length > 0) {
-      fetch('/inv/sendcart', {
+      fetch(api, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({array: cartArr})
+        body: JSON.stringify({
+          inv_id: inv_id,
+          quantity: 1,
+        }),
       })
-      .then(response => response.text())
-      .then(result => {
-        console.log(result)
-      })
-      .catch(error => {
-        console.error('Error:', error)
-      })
-    }
+        .then(response => response.json())
+        .then(data => {
+          if (data.cart.length) {
+            badge.textContent = data.cart.length
+            notice.style.display = 'block'
+            notice.textContent = `${data.inv_make} ${data.inv_model} has been added to cart`
+            setTimeout(() => {
+              notice.style.display = 'none';
+            }, 3000)
+          } else {
+            console.error('Failed to add item to cart:', data.message)
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error)
+        })
+    })
   })
 })
 

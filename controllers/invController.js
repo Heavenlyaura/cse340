@@ -177,8 +177,10 @@ invCont.deleteInvItem = async function (req, res, next) {
  * ************************** */
 invCont.editInventoryView = async function (req, res, next) {
   const inv_id = parseInt(req.params.inv_id)
+  console.log(inv_id)
   let nav = await utilities.getNav()
-  const itemData = await invModel.getInventoryDetailsById(inv_id)
+  const response = await invModel.getInventoryDetailsById(inv_id)
+  const itemData = response[0]
   const classificationList = await utilities.buildClassificationList(itemData.classification_id)
   const itemName = `${itemData.inv_make} ${itemData.inv_model}`
   res.render("./inventory/edit-inventory", {
@@ -235,17 +237,76 @@ invCont.getCartInfoJSON = async (req, res, next) => {
   }
 }
 
-invCont.getCartItems = async (req, res, next) => {
-  try {
-    let nav = await utilities.getNav()
-    const receivedCart = req.body.array
-    let cartView = utilities.getCartView(receivedCart)
+invCont.storeCartData = async (req, res, next) => {
+  const { inv_id, quantity } = req.body;
+  const invItem = await invModel.getInventoryDetailsById(inv_id)
+  if (!invItem || invItem.length === 0) {
+    return res.status(404).json({ message: 'Item not found' })
+  }
+  const invData = invItem[0]
+  const { inv_make, inv_model, inv_price, inv_thumbnail, inv_color } = invData
+  const cartItem = {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_price,
+    inv_thumbnail,
+    inv_color,
+    quantity
+  }
+  req.session.cart = req.session.cart || []
+  req.session.cart.push(cartItem)
+  res.status(200).json({
+    cart: req.session.cart,
+    inv_make: inv_make,
+    inv_model: inv_model,
+    // total: total
+  })
+};
+invCont.getCartView = async (req, res, next) => {
+  const cart = req.session.cart || []
+  const nav = await utilities.getNav()
+  const cartView = utilities.getCartView(cart)
+  res.render('./inventory/cart', {
+    nav,
+    title: 'Cart',
+    cartView,
+  })
+}
 
-  } catch (error) {
-    console.error(error)
+invCont.removeCartItem = async (req, res, next) => {
+  const { inv_id } = req.body;
+  // Find and remove the item from the session cart
+  if (req.session.cart) {
+    req.session.cart = req.session.cart.filter(item => item.inv_id !== inv_id);
+    res.status(200).json({ status: 'success', message: 'Item removed from cart', cart: req.session.cart });
+  } else {
+    res.status(404).json({ status: 'error', message: 'Cart not found' });
   }
 }
 
- 
+invCont.placeOrderView = async (req, res, next) => {
+  try {
+    const { account_id } = res.locals.accountData;
+    const cart = req.session.cart || [];
+    let nav = await utilities.getNav();
+    // Process each item in the cart sequentially
+    for (const item of cart) {
+      await invModel.InsertOrderInTable(account_id, parseInt(item.inv_id));
+    }
+    delete req.session.cart
+    req.flash("notice", 'Order Placed Sucessfully!')
+    res.render('./inventory/order-confirmation', {
+      nav,
+      title: 'Order Confirmation'
+    })
+  } catch (error) {
+    console.error('Error placing order:', error);
+    next(error); // Pass the error to the error-handling middleware
+  }
+};
+
+
+
 
 module.exports = invCont

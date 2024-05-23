@@ -102,7 +102,10 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/")
+      const redirectTo = req.session.redirectTo || '/account/'
+      res.redirect(redirectTo)
+      delete req.session.redirectTo
+      return
     }
   } catch (error) {
     return new Error('Access Forbidden')

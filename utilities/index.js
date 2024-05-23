@@ -50,7 +50,7 @@ Util.buildClassificationGrid = async function (data) {
       grid += '<span>$'
         + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
       grid += '</div>'
-      grid += `<input type="button" class="addCart" inv_id=${vehicle.inv_id} name="addCart" value="Add to Cart">`
+      grid += `<input type="button" id="submit" class="addCart" inv_id=${vehicle.inv_id} name="addCart" value="Add to Cart">`
       grid += '</li>'
     })
     grid += '</ul>'
@@ -143,6 +143,7 @@ Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
     next()
   } else {
+    req.session.redirectTo = req.originalUrl // save the original url in the session
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
   }
@@ -170,6 +171,7 @@ Util.cartIcon = () => {
 }
 
 Util.getCartView = (receivedCart) => {
+
   let display = `<div class="cartItems">`
   display += `<div class="cartHead">`
   display += '<h3>Image</h3>'
@@ -177,8 +179,20 @@ Util.getCartView = (receivedCart) => {
   display += '<h3>Price</h3> </div>'
   display += '<div class="cartBody">'
   receivedCart.forEach(item => {
-    display += `<p>${item.inv_image} ${item.inv_make} ${item.inv_model} ${item.inv_price}`
-  });
+    display += `
+    <p class="cartLine">
+    <span class="cartImg"> <img src="${item.inv_thumbnail}" alt="${item.inv_make} ${item.inv_model}"> </span>
+    <span class="cartProd">${item.inv_make} ${item.inv_model}</span>
+    <span class="priceRemove">
+    <span data-amount=${item.inv_price} class="cartPrice">${new Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD',minimumFractionDigits: 0,
+    maximumFractionDigits: 0}).format(item.inv_price, 0)}</span>
+    <span class="cartRemove" data-inv_id=${item.inv_id}>❌</span>
+    </span>
+    `
+  })
+  display += '</div>'
+  display += '</div>'
+  return display;
 }
 
 module.exports = Util

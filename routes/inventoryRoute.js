@@ -4,7 +4,7 @@ const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require('../utilities')
 const validateInv = require('../utilities/classification-validation')
-const validate = require("../utilities/classification-validation")
+
 
 // Route to the inventory management page
 router.get('/',
@@ -27,6 +27,13 @@ router.get('/delete/:invId',
   utilities.checkAdmin,
   utilities.handleErrors(invController.DeleteInvView))
 
+router.get('/placeorder/',
+  utilities.checkLogin,
+  utilities.handleErrors(invController.placeOrderView))
+
+// router.get('/getcart',
+//   invController.getCart)
+
 // Post request to the inventory detail page
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
@@ -35,10 +42,8 @@ router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryVi
 // Get cart data
 router.get('/cart/:Id', utilities.handleErrors(invController.getCartInfoJSON))
 
+router.get('/cartView', utilities.handleErrors(invController.getCartView))
 
-
-
-// router.get('/cartView', utilities.handleErrors(invController.getCartView))
 
 
 // Post request to the add classification page
@@ -62,9 +67,13 @@ router.post('/update',
   validateInv.checkEditData,
   utilities.handleErrors(invController.updateInventoryData))
 
-router.post('/sendcart/', invController.getCartItems)
+router.post('/addtocart/', invController.storeCartData)
 
+// router.post('/inv/placeorder',
+//   utilities.checkLogin,
+//   invController.placeOrder)
 
+router.delete('/remove/', invController.removeCartItem)
 
 
 
