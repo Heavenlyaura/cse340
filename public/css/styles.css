@@ -54,8 +54,6 @@ body {
   text-align: center;
   font-size: 10px;
 }
-.cart-icon img {
-}
 #top-header {
   display: flex;
   justify-content: space-between;
@@ -213,11 +211,11 @@ End of Classifications Pages
 
 /* Detail Page */
 .detail-page {
-  /* padding: 1rem 5px; */
+  padding: 1rem 10px;
 }
 
 .detail-grid img {
-  /* width: 100%; */
+  width: 100%;
 }
 
 h2 {
@@ -452,23 +450,16 @@ footer {
   .d-reviews li {
     padding: 0.9rem;
   }
-
   /* Detail View */
   .detail-grid {
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr 1fr;
   }
-
-  .detail-page {
-    padding: 1.5rem 1.5rem;
-  }
-
   .detail-page h1,
   .detail-page h2 {
     text-align: left;
   }
-
   /* Login view styling */
   .form {
     width: 500px;

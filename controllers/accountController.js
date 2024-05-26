@@ -78,7 +78,7 @@ async function registerAccount(req, res) {
 
 /* ****************************************
  *  Process login request
- * ************************************ */
+ * ************************************ */ 
 async function accountLogin(req, res) {
   let nav = await utilities.getNav()
   const { account_email, account_password } = req.body
@@ -102,7 +102,7 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      const redirectTo = req.session.redirectTo || '/account/'
+      const redirectTo = req.session.redirectTo || '/account'
       res.redirect(redirectTo)
       delete req.session.redirectTo
       return

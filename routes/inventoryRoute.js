@@ -29,7 +29,7 @@ router.get('/delete/:invId',
 
 router.get('/placeorder/',
   utilities.checkLogin,
-  utilities.handleErrors(invController.placeOrderView))
+  utilities.handleErrors(invController.placeOrder))
 
 // router.get('/getcart',
 //   invController.getCart)
@@ -43,6 +43,11 @@ router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryVi
 router.get('/cart/:Id', utilities.handleErrors(invController.getCartInfoJSON))
 
 router.get('/cartView', utilities.handleErrors(invController.getCartView))
+
+router.get('/orderconfirmation',
+  utilities.checkLogin,
+  utilities.handleErrors(invController.checkPlacedOrder),
+  utilities.handleErrors(invController.orderConfirmationView))
 
 
 

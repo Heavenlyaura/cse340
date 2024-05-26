@@ -147,7 +147,7 @@ invCont.DeleteInvView = async function (req, res, next) {
   let nav = await utilities.getNav()
   let inv_id = req.params.invId
   let invDetailsReq = await invModel.getInventoryDetailsById(inv_id)
-  let invDetails = invDetailsReq
+  let invDetails = invDetailsReq[0]
 
   res.render('./inventory/delete-inventory', {
     nav,
@@ -177,7 +177,6 @@ invCont.deleteInvItem = async function (req, res, next) {
  * ************************** */
 invCont.editInventoryView = async function (req, res, next) {
   const inv_id = parseInt(req.params.inv_id)
-  console.log(inv_id)
   let nav = await utilities.getNav()
   const response = await invModel.getInventoryDetailsById(inv_id)
   const itemData = response[0]
@@ -285,28 +284,48 @@ invCont.removeCartItem = async (req, res, next) => {
   }
 }
 
-invCont.placeOrderView = async (req, res, next) => {
+invCont.placeOrder = async (req, res, next) => {
   try {
     const { account_id } = res.locals.accountData;
     const cart = req.session.cart || [];
-    let nav = await utilities.getNav();
+    if (!cart.length) { // check if an order was placed on an empty cart
+      return res.redirect('/inv/orderconfirmation')
+      // res.send('empty cart')
+    }
     // Process each item in the cart sequentially
     for (const item of cart) {
       await invModel.InsertOrderInTable(account_id, parseInt(item.inv_id));
     }
     delete req.session.cart
-    req.flash("notice", 'Order Placed Sucessfully!')
-    res.render('./inventory/order-confirmation', {
-      nav,
-      title: 'Order Confirmation'
-    })
+    req.session.orderPlaced = true
+    res.redirect('/inv/orderconfirmation');
   } catch (error) {
     console.error('Error placing order:', error);
     next(error); // Pass the error to the error-handling middleware
   }
 };
 
+invCont.orderConfirmationView = async (req, res, next) => {
+  const nav = await utilities.getNav()
+  const { account_firstname } = res.locals.accountData
+  res.render('./inventory/order-confirmation', {
+    nav,
+    title: 'Order Confirmation',
+    account_firstname
+  })
+}
 
-
+invCont.checkPlacedOrder = async (req, res, next) => {
+  if (req.session.orderPlaced) {
+    req.session.orderPlaced = false
+    return next()
+  } else {
+    let nav = await utilities.getNav()
+    res.render('./errors/no-placed-order', {
+      title: "No Order Placed",
+      nav,
+    })
+  }
+}
 
 module.exports = invCont

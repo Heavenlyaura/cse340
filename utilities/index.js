@@ -184,8 +184,10 @@ Util.getCartView = (receivedCart) => {
     <span class="cartImg"> <img src="${item.inv_thumbnail}" alt="${item.inv_make} ${item.inv_model}"> </span>
     <span class="cartProd">${item.inv_make} ${item.inv_model}</span>
     <span class="priceRemove">
-    <span data-amount=${item.inv_price} class="cartPrice">${new Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD',minimumFractionDigits: 0,
-    maximumFractionDigits: 0}).format(item.inv_price, 0)}</span>
+    <span data-amount=${item.inv_price} class="cartPrice">${new Intl.NumberFormat('en-us', {
+      style: 'currency', currency: 'USD', minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(item.inv_price, 0)}</span>
     <span class="cartRemove" data-inv_id=${item.inv_id}>❌</span>
     </span>
     `
@@ -194,5 +196,6 @@ Util.getCartView = (receivedCart) => {
   display += '</div>'
   return display;
 }
+
 
 module.exports = Util
