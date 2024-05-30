@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     itemPrices.forEach(price => {
       price = parseFloat(price.getAttribute('data-amount'))
       totalPrice += price
-      console.log(price)
     });
     total.textContent = new Intl.NumberFormat('en-us',
       {
@@ -37,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
           maximumFractionDigits: 0
         })
         .format(price)
-      console.log(price)
     });
   }
 
@@ -56,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
           if (data.status === 'success') {
-            console.log(data)
             cartLine[index].closest('.cartLine').remove()
             updateTotalPrice(data)
           } else {
